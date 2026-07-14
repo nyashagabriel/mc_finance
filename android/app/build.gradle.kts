@@ -6,9 +6,10 @@ plugins {
 }
 
 android {
-    namespace = "com.example.mc_finance"
+    namespace = "com.mcluke.mcfinance"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Mandatory for Android 15 (API 35) 16 KB memory page alignment
+    ndkVersion = "28.0.12433566"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
@@ -16,14 +17,11 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.mcluke.mcfinance"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -32,9 +30,11 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
+            // Uses debug signing for prototype distribution via GitHub Actions
             signingConfig = signingConfigs.getByName("debug")
+            // Prevent R8 from stripping Google OAuth and Drive API models
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
 }
