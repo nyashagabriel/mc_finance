@@ -35,6 +35,9 @@ jobs:
       - name: Analyze Code
         run: flutter analyze
 
+      - name: Accept Android SDK & NDK Licenses
+        run: yes | flutter doctor --android-licenses || true
+
       - name: Build Release APK for Production
         run: flutter build apk --release
 
